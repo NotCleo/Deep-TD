@@ -1,0 +1,8 @@
+nohup python3 paper-code.py --data tao_mode3_LxAxT.npy,airquality_LxAxT.npy \
+>     --device cpu --out results_paper \
+>     --methods dltd,datc,deeptensor,neuralcp,trpca,costco,ntc \
+>     --ratios 0.1,0.2,0.4,0.6,0.8 --outlier-bounds 5,10,20 \
+>     --noise-levels 0.05,0.1,0.5 \
+>     --attrs "SST,AIRT,RH,T125,T200;SO2,CO,O3,NO2,PM10,PM25" \
+>     --t-limit 0,8760 --eval-set observed --jobs 6 --threads-per-job 4 \
+>     > output.log 2>&1 &
