@@ -1,0 +1,32 @@
+# Requirements for dltd_tao.py
+#   robust IoT tensor recovery, seven methods compared (paper-code.py),
+#   four results produced.
+#
+# CPU only: there is no CUDA code anywhere in the script.  Install the CPU
+# wheels of torch, which are a tenth of the size of the default ones:
+#
+#     python3 -m venv .venv && source .venv/bin/activate
+#     pip install --upgrade pip
+#     pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+#
+# (plain `pip install -r requirements.txt` also works; it just pulls the much
+#  larger GPU build of torch.)
+
+numpy>=1.22,<3            # Generator API, np.nonzero, boolean masking
+torch>=2.0,<3             # every model, autograd, torch.fft, and
+                          # torch.linalg.cholesky_ex / cholesky_solve,
+                          # which carry M1's batched per-instant solve
+matplotlib>=3.6,<4        # the result figures (Agg backend, no display)
+
+# Nothing else is needed.  In particular:
+#   * torch.fft.rfft / torch.linalg.svd carry the t-SVD of TRPCA-TNN, so no
+#     separate FFT or sparse-linear-algebra package is required;
+#   * the worker pool is multiprocessing from the standard library, and the
+#     thread counts are set through torch.set_num_threads and the OMP_* /
+#     MKL_* environment variables the script exports before importing torch;
+#   * the CSV and JSON writing, the timers and the /proc-based memory probe are
+#     all standard library;
+#   * no network access is required at any point.
+#
+# Tested against: numpy 1.26 / 2.x, torch 2.x (CPU), matplotlib 3.6-3.9,
+# Python 3.9 or newer.
